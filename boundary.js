@@ -3,7 +3,6 @@ function Boundary(x, y, w, h) {
     this.options={
         firiction:0.3,
         restitution:0.7,
-        angle:PI/3,
       isStatic:true
   }
   this.body = Bodies.rectangle(x, y, w, h,this.options);
@@ -17,10 +16,13 @@ function Boundary(x, y, w, h) {
     translate(pos.x, pos.y);
     rotate(angle)
     rectMode(CENTER);
-    fill(0)
-    rect(0,0,this.w,this.h);
+    // fill(0)
+    // rect(0,0,this.w,this.h);
+    imageMode(CENTER);
+    image(img, 0, 0, 25, 25);
     pop();
   };
+  
   this.remove = function () {
     World.remove(world, this.body);
   };
