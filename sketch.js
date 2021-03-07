@@ -15,27 +15,39 @@ let love = [];
 
 let loveL = [],
   loveR = [];
-function preload() {
-  img = loadImage("love.png");
-}
-function setup() {
-  createCanvas(540, 800);
 
+var bg;
+function preload() {
+  img = loadImage("./love.png");
+  bg = loadImage("./bg.png");
+}
+
+function scalse(i, k, pos = { x: 0, y: 0 }) {
+  return { x: (i.x - 10) * k, y: (i.y - 50) * k };
+}
+
+const W = 560;
+const H = 1000;
+var k;
+function setup() {
+  let c = createCanvas(W, H);
+  k = W < H ? (W - 24) / 496 : (H - 50) / 496;
   var love1 = [];
   var love2 = [];
   var love3 = [];
   var love4 = [];
   for (let i of lov) {
     if (i.x <= 267 && i.y <= 127) {
-      love1.push(i);
+      love1.push(scalse(i, k));
     } else if (i.x <= 267 && i.y > 127) {
-      love2.push(i);
+      love2.push(scalse(i, k));
     } else if (i.x >= 267 && i.y > 127) {
-      love3.push(i);
+      love3.push(scalse(i, k));
     } else {
-      love4.push(i);
+      love4.push(scalse(i, k));
     }
   }
+  // saveCanvas("myCanvas", "jpg");
   /**Effect1 */
   // love1.sort((a,b)=>(a.x<b.x)?1:-1)
   // love2.sort((a, b) => (a.y > b.y ? 1 : -1));
@@ -104,10 +116,19 @@ function draw() {
     fill("rgb(100%,0%,10%)");
     textAlign(CENTER);
     textStyle(BOLD);
-    text("I Love You", 265, 265);
+    text(
+      "I Love You",
+      scalse({ x: 265, y: 265 }, k).x,
+      scalse({ x: 265, y: 265 }, k).y
+    );
+    if (frameCount % 120 == 0) {
+      lovBox = [];
+      l = r = 0;
+    }
   }
 
   //! Xóa những object ra ngoài màn hình.
+
   for (let i = 0; i < boxes.length; i++) {
     if (boxes[i].isOffScreen()) {
       boxes[i].remove();
@@ -128,8 +149,10 @@ function draw() {
   // rect(width, height/2, 10, height);
 
   // ! love Image
+
   for (let lb of lovBox) {
     lb.show();
   }
+
   // ground.show();
 }
